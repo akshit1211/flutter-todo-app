@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_todo/constants.dart';
+import 'package:flutter_todo/todo.dart';
+import 'package:flutter_todo/todo_provider.dart';
 
-class AddTodo extends StatelessWidget {
-  const AddTodo({super.key});
+class AddTodo extends ConsumerWidget {
+  AddTodo({super.key});
 
+  final todoController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Todo'),
       ),
       body: Column(children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: TextField(
-            decoration: InputDecoration(hintText: 'What needs to be done?'),
+            controller: todoController,
+            decoration:
+                const InputDecoration(hintText: 'What needs to be done?'),
           ),
         ),
         SizedBox(
@@ -26,9 +32,7 @@ class AddTodo extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: GestureDetector(
-                    onTap: () {
-                      
-                    },
+                    onTap: () {},
                     child: Container(
                       height: 50,
                       width: 50,
@@ -43,7 +47,20 @@ class AddTodo extends StatelessWidget {
                   ),
                 );
               }),
-        )
+        ),
+        ElevatedButton(
+            onPressed: () {
+              //add todo
+              final todo = Todo(
+                title: todoController.text,
+                id: DateTime.now().millisecondsSinceEpoch.toString(),
+                isDone: false,
+                priority: 1,
+              );
+              ref.read(todoProvider.notifier).add(todo);
+              todoController.clear();
+            },
+            child: const Text("Add Todo."))
       ]),
     );
   }
