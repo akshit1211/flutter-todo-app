@@ -8,6 +8,7 @@ class AddTodo extends ConsumerWidget {
   AddTodo({super.key});
 
   final todoController = TextEditingController();
+  int priority = 0;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -32,7 +33,9 @@ class AddTodo extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      priority = index;
+                    },
                     child: Container(
                       height: 50,
                       width: 50,
@@ -55,10 +58,11 @@ class AddTodo extends ConsumerWidget {
                 title: todoController.text,
                 id: DateTime.now().millisecondsSinceEpoch.toString(),
                 isDone: false,
-                priority: 1,
+                priority: priority,
               );
               ref.read(todoProvider.notifier).add(todo);
               todoController.clear();
+              Navigator.of(context).pop();
             },
             child: const Text("Add Todo."))
       ]),

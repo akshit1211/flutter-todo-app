@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_todo/add_todo_screen.dart';
+import 'package:flutter_todo/constants.dart';
 import 'package:flutter_todo/todo_provider.dart';
 
 class TodoScreen extends ConsumerWidget {
@@ -23,6 +24,18 @@ class TodoScreen extends ConsumerWidget {
               itemBuilder: (context, index) {
                 return ListTile(
                     title: Text(todoList[index].title!),
+                    leading: Container(
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colorList[todoList[index].priority!],
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2,
+                        ),
+                      ),
+                    ),
                     trailing: IconButton(
                       icon: const Icon(
                         Icons.delete,
